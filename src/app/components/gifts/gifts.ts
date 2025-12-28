@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { GiftsService } from '../../services/gifts-service';
+import { Gift } from '../../models/giftModel';
 
 @Component({
   selector: 'app-gifts',
@@ -12,15 +13,27 @@ export class Gifts {
   giftsSrv: GiftsService = inject(GiftsService)
   gifts$ = this.giftsSrv.getAll();
 
-  getAll(){
+  geById(id: number){
+    return this.giftsSrv.geById(id);
   }
-  geById(){
+  update(item: Gift, id: number){
+    if (item) {
+      this.giftsSrv.update(id, item).subscribe(data => {
+        this.gifts$ = this.giftsSrv.getAll();
+      });
+    }
   }
-  update(){
+  add(item: Gift | undefined){
+    if (item) {
+      this.giftsSrv.add(item).subscribe(data => {
+        this.gifts$ = this.giftsSrv.getAll();
+      });
+    }
   }
-  add(){
-  }
-  delete(){
+  delete(id: number){
+    this.giftsSrv.delete(id).subscribe(d => {
+      this.gifts$ = this.giftsSrv.getAll();
+    });
   }
 
 }
