@@ -1,4 +1,4 @@
-<p>donors works!</p>
+<p> Donors </p>
 <table>
     <thead>
         <tr>
@@ -13,11 +13,11 @@
     <tbody>
         @for(d of donors$ | async; track d.id){
             <tr>
-              <td> g.firstName </td>
-              <td> g.lastName </td>
-              <td> g.phone </td>
-              <td> g.email </td>
-              <td> g.address </td>
+              <td> {{d.firstName}} </td>
+              <td> {{d.lastName}} </td>
+              <td> {{d.phone}} </td>
+              <td> {{d.email}} </td>
+              <td> {{d.address}} </td>
             </tr>
         }
     </tbody>

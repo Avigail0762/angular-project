@@ -1,5 +1,4 @@
-<p>gifts works!</p>
-
+<p> Gifts </p>
 <table>
     <thead>
         <tr>
@@ -16,13 +15,13 @@
     <tbody>
         @for(g of gifts$ | async; track g.id){
             <tr>
-              <td> g.name </td>
-              <td> g.donorName </td>
-              <td> g.descreption </td>
-              <td> g.price </td>
-              <td> g.BuyersNumber </td>
-              <td> g.category </td>
-              <td> g.winnerTicketId </td>
+              <td> {{g.name}} </td>
+              <td> {{g.donor}} </td>
+              <td> {{g.description}} </td>
+              <td> {{g.price}} </td>
+              <td> {{g.BuyersNumber}} </td>
+              <td> {{g.category}} </td>
+              <td> {{g.winnerTicketId}} </td>
             </tr>
         }
     </tbody>
