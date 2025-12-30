@@ -1,25 +1,30 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Gift } from '../models/giftModel';
+import { GiftDTO } from '../models/Dto/giftDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GiftsService {
+    httpClient: HttpClient = inject(HttpClient);
+    BASE_URL: string = 'http://https://localhost:7253//api/gift';
   
   getAll(){
-  
+     return this.httpClient.get<Gift[]>(this.BASE_URL);
   }
-
-  geById(){
-
+  geById(id:number){
+    return this.httpClient.get<Gift>(this.BASE_URL + '/'+ id);
   }
-  update(){
-
+  update(item: GiftDTO, id:number){
+        return this.httpClient.put<GiftDTO>(this.BASE_URL, item + '/'+ id);
   }
-  add(){
+  add(item: GiftDTO){
 
+    return this.httpClient.post<GiftDTO>(this.BASE_URL, item);
   }
-  delete(){
-
+  delete(id: number){
+    return this.httpClient.delete<boolean>(this.BASE_URL+ '?id=' + id)
   }
   
 }

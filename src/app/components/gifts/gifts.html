@@ -1,1 +1,29 @@
 <p>gifts works!</p>
+
+<table>
+    <thead>
+        <tr>
+          <th> name </th>
+          <th> donorName </th>
+          <th> descreption </th>
+          <th> price </th>
+          <th> BuyersNumber </th>
+          <th> category </th>
+          <th> winnerTicketId </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @for(g of gifts$ | async; track g.id){
+            <tr>
+              <td> g.name </td>
+              <td> g.donorName </td>
+              <td> g.descreption </td>
+              <td> g.price </td>
+              <td> g.BuyersNumber </td>
+              <td> g.category </td>
+              <td> g.winnerTicketId </td>
+            </tr>
+        }
+    </tbody>
+</table>
