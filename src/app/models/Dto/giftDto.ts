@@ -1,8 +1,5 @@
-export class Gift{
-    id!: number
+export class GiftDTO{
     name!: string;
-    //change to Donor type
-    donor?: string;
     price!: number;
     description?: string;
     donorId!: number;
