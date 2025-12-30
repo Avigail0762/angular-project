@@ -14,7 +14,7 @@ export class GiftsService {
   getAll(){
      return this.httpClient.get<Gift[]>(this.BASE_URL);
   }
-  getById(id:number){
+  geById(id:number){
     return this.httpClient.get<Gift>(this.BASE_URL + '/'+ id);
   }
   update(item: GiftDTO, id:number){

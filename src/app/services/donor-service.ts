@@ -14,7 +14,8 @@ export class DonorService {
        return this.httpClient.get<Donor[]>(this.BASE_URL);
     }
     geByName(firstName: string, lastName: string){
-      return this.httpClient.get<Donor>(this.BASE_URL + '/'+ firstName + '/' + lastName);
+      return this.httpClient.get<Donor>(this.BASE_URL + '/name', { params: { firstName, lastName } }
+);
     }
     update(item: DonorDTO, id:number){
           return this.httpClient.put<DonorDTO>(this.BASE_URL, item + '/'+ id);
