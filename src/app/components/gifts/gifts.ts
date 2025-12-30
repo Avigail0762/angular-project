@@ -22,7 +22,9 @@ export class Gifts {
     this.gifts$ = this.giftsSrv.getAll();
   }
   getById(id: number){
-
+    this.giftsSrv.getById(id).subscribe(data =>{
+      this.gift = data;
+    })
   }
   update(item: GiftDTO, id: number){
     this.giftsSrv.update(item, id).subscribe(data =>{
