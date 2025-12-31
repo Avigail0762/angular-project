@@ -2,33 +2,35 @@ import { Component, inject, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GiftDTO } from '../../../models/Dto/giftDto';
 import { GiftsService } from '../../../services/gifts-service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-gift',
-  imports: [],
+  imports: [ReactiveFormsModule, CommonModule], 
   templateUrl: './add-gift.html',
   styleUrl: './add-gift.scss',
 })
 export class AddGift {
   giftsSrv: GiftsService = inject(GiftsService)
-  gifts$ = this.giftsSrv.getAll();
-  gift$?: Observable<GiftDTO>;
-  
-  @Input()
-  giftId: number = -1;
 
-  giftForm: FormGroup = new FormGroup({});
+  giftForm: FormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    price: new FormControl(0, [Validators.required, Validators.min(10)]),
+    description: new FormControl(''),
+    donorId: new FormControl(0, [Validators.required, Validators.min(1)]),
+    category: new FormControl('')
+  });
+ 
+  addGift() {
+    if (this.giftForm.invalid) return;
 
-  getAll(){
-    this.gifts$ = this.giftsSrv.getAll();
+    const gift: GiftDTO = this.giftForm.value;
+      this.giftsSrv.add(gift).subscribe() ;
   }
 
-  add(item: GiftDTO | undefined){
-      if (item) {
-        this.giftsSrv.add(item).subscribe(data => {
-          this.gifts$ = this.giftsSrv.getAll();
-        });
-      }
-    }
+  cancel() {
+    this.giftForm.reset();
+  }
+
 }

@@ -1,7 +1,7 @@
 export class DonorDTO{
     firstName!: string;
     lastName!: string;
-    phone?: string;
+    phoneNumber?: string;
     email!: string;
     address?: string;
 }
