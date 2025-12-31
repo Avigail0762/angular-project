@@ -4,6 +4,7 @@ import { Gift } from '../../models/giftModel';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { GiftDTO } from '../../models/Dto/giftDto';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-gifts',
@@ -16,15 +17,13 @@ export class Gifts {
   giftsSrv: GiftsService = inject(GiftsService)
 
   gifts$ = this.giftsSrv.getAll();
-  gift = new Gift();
+  gift$?: Observable<GiftDTO>;
 
   getAll(){
     this.gifts$ = this.giftsSrv.getAll();
   }
   getById(id: number){
-    this.giftsSrv.getById(id).subscribe(data =>{
-      this.gift = data;
-    })
+  this.gift$ = this.giftsSrv.getById(id);
   }
   update(item: GiftDTO, id: number){
     this.giftsSrv.update(item, id).subscribe(data =>{

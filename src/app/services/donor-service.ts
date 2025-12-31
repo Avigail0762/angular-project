@@ -24,14 +24,15 @@ export class DonorService {
   getAll() {
     return this.httpClient.get<Donor[]>(this.BASE_URL, { headers: this.getAuthHeader() });
   }
+
   geByName(firstName: string, lastName: string) {
-    return this.httpClient.get<Donor>(this.BASE_URL + '/' + firstName + '/' + lastName, { headers: this.getAuthHeader() });
+    return this.httpClient.get<Donor>(this.BASE_URL + '/name', { params: { firstName, lastName }, headers: this.getAuthHeader() }
+    );
   }
   update(item: DonorDTO, id: number) {
-    return this.httpClient.put<DonorDTO>(this.BASE_URL, item + '/' + id, { headers: this.getAuthHeader() });
+    return this.httpClient.put<DonorDTO>(this.BASE_URL + '/' + id, item, { headers: this.getAuthHeader() });
   }
   add(item: DonorDTO) {
-
     return this.httpClient.post<DonorDTO>(this.BASE_URL, item, { headers: this.getAuthHeader() });
   }
   delete(id: number) {
