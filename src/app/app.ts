@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Gifts } from './components/gifts/gifts';
-import { Donors } from './components/donors/donors';
+import { Gifts } from './components/Gift/gifts/gifts';
+import { Donors } from './components/Donor/donors/donors';
 import { Lottery } from './components/lottery/lottery';
 import { Auth } from './components/auth/auth';
 

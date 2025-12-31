@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DonorService } from '../../services/donor-service';
-import { Donor } from '../../models/donorModel';
-import { DonorDTO } from '../../models/Dto/donorDto';
+import { DonorService } from '../../../services/donor-service';
+import { Donor } from '../../../models/donorModel';
+import { DonorDTO } from '../../../models/Dto/donorDto';
 
 @Component({
   selector: 'app-donors',

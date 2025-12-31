@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { GiftsService } from '../../services/gifts-service';
-import { Gift } from '../../models/giftModel';
+import { GiftsService } from '../../../services/gifts-service';
+import { Gift } from '../../../models/giftModel';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { GiftDTO } from '../../models/Dto/giftDto';
+import { GiftDTO } from '../../../models/Dto/giftDto';
 import { Observable } from 'rxjs';
 
 @Component({
