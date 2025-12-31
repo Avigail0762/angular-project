@@ -36,7 +36,7 @@ export class DonorService {
     return this.httpClient.post<DonorDTO>(this.BASE_URL, item, { headers: this.getAuthHeader() });
   }
   delete(id: number) {
-    return this.httpClient.delete<void>(this.BASE_URL + '?id=' + id, { headers: this.getAuthHeader() });
+    return this.httpClient.delete<void>(this.BASE_URL + `/${id}`, { headers: this.getAuthHeader() });
   }
 
 }

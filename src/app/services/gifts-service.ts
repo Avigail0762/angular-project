@@ -37,7 +37,7 @@ getAuthHeader() {
     return this.httpClient.post<GiftDTO>(this.BASE_URL, item, { headers: this.getAuthHeader() });
   }
   delete(id: number){
-    return this.httpClient.delete<void>(this.BASE_URL+ '?id=' + id, { headers: this.getAuthHeader() });
+    return this.httpClient.delete<void>(this.BASE_URL+ `/${id}`, { headers: this.getAuthHeader() });
   }
   
 }

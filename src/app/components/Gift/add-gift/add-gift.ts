@@ -14,13 +14,11 @@ export class AddGift {
   giftsSrv: GiftsService = inject(GiftsService)
   gifts$ = this.giftsSrv.getAll();
   gift$?: Observable<GiftDTO>;
+  
   @Input()
   giftId: number = -1;
 
   giftForm: FormGroup = new FormGroup({});
-
-
-  
 
   getAll(){
     this.gifts$ = this.giftsSrv.getAll();
@@ -33,6 +31,4 @@ export class AddGift {
         });
       }
     }
-
-
 }
