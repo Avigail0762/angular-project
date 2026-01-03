@@ -27,6 +27,7 @@ export class AddGift {
 
     const gift: GiftDTO = this.giftForm.value;
       this.giftsSrv.add(gift).subscribe() ;
+      //add navigate to gifts list
   }
 
   cancel() {

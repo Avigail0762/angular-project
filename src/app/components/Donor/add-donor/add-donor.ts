@@ -27,7 +27,8 @@ export class AddDonor {
     if (this.donorForm.invalid) return;
 
     const donor: DonorDTO = this.donorForm.value;
-      this.donorSrv.add(donor).subscribe(); 
+      this.donorSrv.add(donor).subscribe();
+      //add navigate to donors list 
        }
 
   cancel() {
