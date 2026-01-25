@@ -11,13 +11,12 @@ export class AuthService {
   BASE_URL: string = 'https://localhost:7253/api/auth';
 
   isLoggedIn: boolean = false;
-  
+
   login(username: string, password: string) {
     this.httpClient.post<{ token: string }>(this.BASE_URL + '/login', { username, password })
       .subscribe({
         next: (response) => {
           localStorage.setItem('authToken', response.token);
-          // שמירת התפקיד גם בלוקאל סטורֵיג' לנגישות מהירה
           const role = this.getRole();
           localStorage.setItem('role', role);
             // שמירת מזהה המשתמש אם קיים בטוקן
@@ -37,7 +36,6 @@ export class AuthService {
       });
   }
 
-  // קבלת תפקיד מהטוקן ללא שכפול לוגיקה בקומפוננטות
   getRole(): 'manager' | 'user' | 'userWithoutToken' {
     const token = localStorage.getItem('authToken');
     if (!token) return 'userWithoutToken';
@@ -65,20 +63,18 @@ export class AuthService {
 
   isManager(): boolean { return this.getRole() === 'manager'; }
 
-  // קריאה מהירה לערך שנשמר בלוקאל סטורֵיג' (עם נפילה חזרה לפענוח)
   getStoredRole(): 'manager' | 'user' | 'userWithoutToken' {
     const stored = localStorage.getItem('role');
     if (stored === 'manager' || stored === 'user') return stored;
     return this.getRole();
   }
 
-  // חילוץ userId מהטוקן
   getUserId(): number | null {
     const token = localStorage.getItem('authToken');
     if (!token) return null;
     try {
       const decoded: any = jwtDecode(token);
-      const keys = [
+      const keys = [ //לבדוק האם אפשר לקצר כנ"ל לשאר הפונקציות
         'sub',
         'nameid',
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
@@ -96,7 +92,7 @@ export class AuthService {
     }
   }
 
-  // קריאה מהירה למזהה שנשמר בלוקאל סטורֵיג'
+
   getStoredUserId(): number | null {
     const stored = localStorage.getItem('userId');
     if (stored !== null) {
@@ -106,7 +102,6 @@ export class AuthService {
     return this.getUserId();
   }
 
-  // האם יש טוקן תקף בלוקאל סטורֵיג'
   hasToken(): boolean {
     const token = localStorage.getItem('authToken');
     return !!token;
@@ -120,4 +115,3 @@ export class AuthService {
     alert('התנתקת מהמערכת.');
   }
 }
-
