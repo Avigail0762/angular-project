@@ -1,0 +1,91 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { AuthService } from './auth-service';
+import { UserDTO } from '../models/Dto/userDto';
+
+@Injectable({
+  providedIn: 'root',
+})
+
+export class CustomerService {
+  httpClient: HttpClient = inject(HttpClient);
+  BASE_URL: string = 'https://localhost:7253/api/customer';
+  auth = inject(AuthService);
+
+  registerCustomer(customerData: UserDTO) {
+    return this.httpClient.post<any>(this.BASE_URL + '/register', customerData);
+  }
+
+  addToCart(customerId: number, giftId: number) {
+    const params = new HttpParams()
+      .set('userId', customerId)
+      .set('giftId', giftId);
+    return this.httpClient.post<void>(
+      this.BASE_URL + `/cart/add`,
+      null,
+      { params, headers: this.getAuthHeader() }
+    );
+  }
+
+  // עטיפה נוחה: משתמש נוכחי מה-Auth
+  addToCartForCurrentUser(giftId: number) {
+    const userId = this.auth.getStoredUserId();
+    if (userId == null) {
+      alert('לא נמצא משתמש מחובר');
+      return this.httpClient.post<void>('about:blank', null); // no-op observable
+    }
+    return this.addToCart(userId, giftId);
+  }
+
+  removeFromCart(customerId: number, giftId: number) {
+    const params = new HttpParams()
+      .set('userId', customerId)
+      .set('giftId', giftId);
+    return this.httpClient.delete<void>(
+      this.BASE_URL + `/cart/remove`,
+      { params, headers: this.getAuthHeader() }
+    );
+  }
+
+  removeFromCartForCurrentUser(giftId: number) {
+    const userId = this.auth.getStoredUserId();
+    if (userId == null) {
+      alert('לא נמצא משתמש מחובר');
+      return this.httpClient.delete<void>('about:blank');
+    }
+    return this.removeFromCart(userId, giftId);
+  }
+
+  purchase() {
+    const userId = this.auth.getStoredUserId();
+    if (userId == null) {
+      alert('לא נמצא משתמש מחובר');
+    }
+    return this.httpClient.post<void>(this.BASE_URL + `/cart/purchase`, { userId }, { headers: this.getAuthHeader()});
+  }
+
+  getCart(customerId: number) {
+    return this.httpClient.get<any>(
+      this.BASE_URL + `/${customerId}/cart`,
+      { headers: this.getAuthHeader() }
+    );
+  }
+
+  getCartForCurrentUser() {
+    const userId = this.auth.getStoredUserId();
+    if (userId == null) {
+      alert('לא נמצא משתמש מחובר');
+      return this.httpClient.get<any>('about:blank');
+    }
+    return this.getCart(userId);
+  }
+  
+  private getAuthHeader() {
+    const token = localStorage.getItem('authToken') || '';
+    if (!token) {
+      alert('אין טוקן תקף, מעביר להתחברות...');
+      return;
+    }
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+}
