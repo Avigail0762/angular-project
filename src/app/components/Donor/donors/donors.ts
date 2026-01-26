@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
 import { DonorService } from '../../../services/donor-service';
 import { Donor } from '../../../models/donorModel';
 import { DonorDTO } from '../../../models/Dto/donorDto';
 
 @Component({
   selector: 'app-donors',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterOutlet],
   templateUrl: './donors.html',
   styleUrl: './donors.scss'
 })
@@ -42,6 +43,5 @@ export class Donors {
         this.donors$ = this.donorSrv.getAll();
       })
     }
-
 
 }

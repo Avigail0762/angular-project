@@ -1,4 +1,5 @@
 <p> Gifts </p>
+<button (click)="addGift()"> Add Gift </button>
 <table>
     <thead>
         <tr>
@@ -24,7 +25,16 @@
               <td> {{g.winnerTicketId}} </td>
               <td> {{g.isDrawn}} </td>
             </tr>
+            @if(this.isManager){
             <button (click)="delete(g.id)"> Delete Gift </button>
+            <button (click)="updateGift()"> Update Gift </button>
+            }
+             @if(!this.isManager){
+                <button (click)="addToCart(g.id)"> Add To Cart </button>
+            }
         }
     </tbody>
 </table>
+
+<router-outlet></router-outlet>
+
