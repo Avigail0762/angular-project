@@ -17,17 +17,18 @@
         @for(g of gifts$ | async; track g.id){
             <tr>
               <td> {{g.name}} </td>
-              <td> {{g.donor}} </td>
+              <td>{{ g.donor?.firstName }} {{ g.donor?.lastName }}</td>
               <td> {{g.description}} </td>
               <td> {{g.price}} </td>
-              <td> {{g.BuyersNumber}} </td>
+              <td> {{g.buyersNumber}} </td>
               <td> {{g.category}} </td>
               <td> {{g.winnerTicketId}} </td>
               <td> {{g.isDrawn}} </td>
             </tr>
+
             @if(this.isManager){
             <button (click)="delete(g.id)"> Delete Gift </button>
-            <button (click)="updateGift()"> Update Gift </button>
+            <button (click)="updateGift(g.id)"> Update Gift </button>
             }
              @if(!this.isManager){
                 <button (click)="addToCart(g.id)"> Add To Cart </button>
@@ -36,5 +37,5 @@
     </tbody>
 </table>
 
-<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->
 

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { DonorDTO } from '../../../models/Dto/donorDto';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-donor',
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class AddDonor {
 
   donorSrv: DonorService = inject(DonorService);
+  router = inject(Router);
 
   donorForm: FormGroup = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
@@ -28,11 +30,11 @@ export class AddDonor {
 
     const donor: DonorDTO = this.donorForm.value;
       this.donorSrv.add(donor).subscribe();
-      //add navigate to donors list 
-       }
+      alert("Donor added!");
+      this.router.navigate(['/donors']);       }
 
   cancel() {
-    this.donorForm.reset();
+    this.router.navigate(['/donors']);
   }
 
 

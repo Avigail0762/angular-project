@@ -4,15 +4,19 @@ import { GiftDTO } from '../../../models/Dto/giftDto';
 import { GiftsService } from '../../../services/gifts-service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-add-gift',
   imports: [ReactiveFormsModule, CommonModule], 
   templateUrl: './add-gift.html',
   styleUrl: './add-gift.scss',
+  
 })
 export class AddGift {
   giftsSrv: GiftsService = inject(GiftsService)
+  router = inject(Router);
 
   giftForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -27,11 +31,12 @@ export class AddGift {
 
     const gift: GiftDTO = this.giftForm.value;
       this.giftsSrv.add(gift).subscribe() ;
-      //add navigate to gifts list
+      alert('Gift added successfully!');
+      this.router.navigate(['/gifts']);
   }
 
   cancel() {
-    this.giftForm.reset();
+    this.router.navigate(['/gifts']);
   }
 
 }

@@ -35,11 +35,11 @@ export class Gifts {
 
   addGift(){
     // Navigate to the child route under /gifts
-    this.router.navigate(['add'], { relativeTo: this.activateRoute });
+    this.router.navigate(['/gifts/add']);
   }
 
-  updateGift(){
-    this.router.navigate(['update'], { relativeTo: this.activateRoute });
+  updateGift(giftId: number){
+  this.router.navigate(['/gifts/update', giftId]);
   }
 
   addToCart(giftId: number){
@@ -53,18 +53,7 @@ export class Gifts {
   getById(id: number){
   this.gift$ = this.giftsSrv.getById(id);
   }
-  update(item: GiftDTO, id: number){
-    this.giftsSrv.update(item, id).subscribe(data =>{
-      this.gifts$ = this.giftsSrv.getAll();
-    })
-  }
-  add(item: GiftDTO | undefined){
-      if (item) {
-        this.giftsSrv.add(item).subscribe(data => {
-          this.gifts$ = this.giftsSrv.getAll();
-        });
-      }
-    }
+
 
   delete(id: number){
     this.giftsSrv.delete(id).subscribe(data =>{
