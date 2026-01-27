@@ -6,6 +6,8 @@ import { AddDonor } from './components/Donor/add-donor/add-donor';
 import { UpdateGift } from './components/Gift/update-gift/update-gift';
 import { Auth } from './components/auth/auth';
 import { UpdateDonor } from './components/Donor/update-donor/update-donor';
+import { Register } from './components/Customer/register/register';
+import { ShoppingCart } from './components/Customer/shopping-cart/shopping-cart';
 
 export const routes: Routes = [
     {path: 'gifts', component: Gifts},
@@ -17,5 +19,6 @@ export const routes: Routes = [
     { path: 'donors/update/:firstName/:lastName', component: UpdateDonor },
     
     {path: 'login', component: Auth },
-    {path: 'register', component: Auth }
+    {path: 'register', component: Register },
+    {path: 'cart', component: ShoppingCart }
 ];

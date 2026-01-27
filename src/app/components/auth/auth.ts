@@ -17,17 +17,30 @@ export class Auth {
   password = '';
   username = '';
 
-  login(username: string, password: string) {
-      this.authSrv.login(username, password);
-      // לבדוק האם יש דרך טובה יותר לעשות את זה
-      // לבדוק האם הוא מחובר או לא
-       if (this.authSrv.isLoggedIn) {
-        alert('Login successful!');
-      }
-      else {
-        alert('Login failed. Navigating you to register.');
-        this.router.navigate(['/register']);
-      }
-  }
+// login(username: string, password: string) {
+//       this.authSrv.login(username, password);
+//       // לבדוק האם יש דרך טובה יותר לעשות את זה
+//       // לבדוק האם הוא מחובר או לא
+//        if (this.authSrv.isLoggedIn) {
+//         alert('Login successful!');
+//       }
+//       else {
+//         alert('Login failed. Navigating you to register.');
+//         this.router.navigate(['/register']);
+//       }
+//   }
+
+login(username: string, password: string) {
+  this.authSrv.login(username, password).subscribe((ok) => {
+    if (ok) {
+      alert('Login successful!');
+      // Navigate to a post-login page if desired
+      // this.router.navigate(['/']);
+    } else {
+      alert('Login failed. Navigating you to register.');
+      this.router.navigate(['/register']);
+    }
+  });
+}
   
 }

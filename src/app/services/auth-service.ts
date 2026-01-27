@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
+import { of } from 'rxjs';
+import { tap, map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -13,28 +15,50 @@ export class AuthService {
   isLoggedIn: boolean = false;
 
   login(username: string, password: string) {
-    this.httpClient.post<{ token: string }>(this.BASE_URL + '/login', { username, password })
-      .subscribe({
-        next: (response) => {
-          localStorage.setItem('authToken', response.token);
-          const role = this.getRole();
-          localStorage.setItem('role', role);
-            // שמירת מזהה המשתמש אם קיים בטוקן
-          const uid = this.getUserId();
-          if (uid !== null) {
-            localStorage.setItem('userId', String(uid));
-          }
-          // Notify app to refresh role immediately
-          window.dispatchEvent(new CustomEvent('authTokenUpdated'));
-          alert('ההתחברות הצליחה!');
-          this.isLoggedIn = true;
-        },
-        error: (err) => {
-          this.isLoggedIn = false;
-          alert('שגיאה בהתחברות: ' + err.message);
-        }
-      });
-  }
+  return this.httpClient
+    .post<{ token: string }>(this.BASE_URL + '/login', { username, password })
+    .pipe(
+      tap((response) => {
+        localStorage.setItem('authToken', response.token);
+        const role = this.getRole();
+        localStorage.setItem('role', role);
+        const uid = this.getUserId();
+        if (uid !== null) localStorage.setItem('userId', String(uid));
+        window.dispatchEvent(new CustomEvent('authTokenUpdated'));
+        this.isLoggedIn = true;
+      }),
+      map(() => true),
+      catchError((err) => {
+        this.isLoggedIn = false;
+        alert('שגיאה בהתחברות: ' + err.message);
+        return of(false);
+      })
+    );
+}
+
+  // login(username: string, password: string) {
+  //   this.httpClient.post<{ token: string }>(this.BASE_URL + '/login', { username, password })
+  //     .subscribe({
+  //       next: (response) => {
+  //         localStorage.setItem('authToken', response.token);
+  //         const role = this.getRole();
+  //         localStorage.setItem('role', role);
+  //           // שמירת מזהה המשתמש אם קיים בטוקן
+  //         const uid = this.getUserId();
+  //         if (uid !== null) {
+  //           localStorage.setItem('userId', String(uid));
+  //         }
+  //         // Notify app to refresh role immediately
+  //         window.dispatchEvent(new CustomEvent('authTokenUpdated'));
+  //         alert('ההתחברות הצליחה!');
+  //         this.isLoggedIn = true;
+  //       },
+  //       error: (err) => {
+  //         this.isLoggedIn = false;
+  //         alert('שגיאה בהתחברות: ' + err.message);
+  //       }
+  //     });
+  // }
 
   getRole(): 'manager' | 'user' | 'userWithoutToken' {
     const token = localStorage.getItem('authToken');

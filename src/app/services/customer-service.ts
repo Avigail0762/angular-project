@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AuthService } from './auth-service';
 import { UserDTO } from '../models/Dto/userDto';
+import { Gift } from '../models/giftModel';
 
 @Injectable({
   providedIn: 'root',
@@ -65,8 +66,8 @@ export class CustomerService {
   }
 
   getCart(customerId: number) {
-    return this.httpClient.get<any>(
-      this.BASE_URL + `/${customerId}/cart`,
+    return this.httpClient.get<Gift[]>(
+      this.BASE_URL + `/cart`, customerId ? { params: new HttpParams().set('userId', customerId), headers: this.getAuthHeader() } :
       { headers: this.getAuthHeader() }
     );
   }
