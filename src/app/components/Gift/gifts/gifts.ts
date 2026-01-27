@@ -38,8 +38,8 @@ export class Gifts {
     this.router.navigate(['add'], { relativeTo: this.activateRoute });
   }
 
-  updateGift(){
-    this.router.navigate(['update'], { relativeTo: this.activateRoute });
+  updateGift(id: number){
+    this.router.navigate(['update', id], { relativeTo: this.activateRoute });
   }
 
   addToCart(giftId: number){

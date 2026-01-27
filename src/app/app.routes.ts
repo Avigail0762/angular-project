@@ -13,6 +13,8 @@ export const routes: Routes = [
             { path: 'update', component: UpdateGift }
         ]
     },
+
+
     { path: 'donors', component: Donors, children: [
             { path: 'add', component: AddDonor }
     ] },
