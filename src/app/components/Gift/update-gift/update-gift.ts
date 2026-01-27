@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GiftsService } from '../../../services/gifts-service';
 import { GiftDTO } from '../../../models/Dto/giftDto';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-update-gift',
@@ -12,6 +13,8 @@ import { GiftDTO } from '../../../models/Dto/giftDto';
 })
 export class UpdateGift {
     giftsSrv: GiftsService = inject(GiftsService)
+    route = inject(ActivatedRoute);
+    router = inject(Router);
     giftId!: number;
     gift?: GiftDTO;
 
@@ -22,15 +25,31 @@ export class UpdateGift {
       donorId: new FormControl(0, Validators.required),
       category: new FormControl('')
     });
+      ngOnInit() {
+    this.giftId = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.giftId) {
+      this.giftsSrv.getById(this.giftId).subscribe(g => {
+        this.gift = g;
+        this.giftForm.patchValue(this.gift);
+      });
+    }
+  }
 
-    updateGift() {
+
+  updateGift() {
     if (!this.giftId || this.giftForm.invalid) return;
-    
+
     const updatedGift: GiftDTO = {
       ...this.gift,
       ...this.giftForm.value
     };
 
-      this.giftsSrv.update(updatedGift, this.giftId).subscribe();
-    }
+    this.giftsSrv.update(updatedGift, this.giftId).subscribe(() => {
+      alert('Gift updated successfully!');
+      this.router.navigate(['/gifts']); // חזרה לרשימת מתנות
+    });
+  }
+    cancel() {
+    this.router.navigate(['/gifts']);
+  }
 }

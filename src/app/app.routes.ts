@@ -5,20 +5,17 @@ import { Donors } from './components/Donor/donors/donors';
 import { AddDonor } from './components/Donor/add-donor/add-donor';
 import { UpdateGift } from './components/Gift/update-gift/update-gift';
 import { Auth } from './components/auth/auth';
+import { UpdateDonor } from './components/Donor/update-donor/update-donor';
 
 export const routes: Routes = [
-    {
-        path: 'gifts', component: Gifts, children: [
-            { path: 'add', component: AddGift },
-            { path: 'update', component: UpdateGift }
-        ]
-    },
+    {path: 'gifts', component: Gifts},
+    { path: 'gifts/add', component: AddGift },
+    { path: 'gifts/update/:id', component: UpdateGift },
 
-
-    { path: 'donors', component: Donors, children: [
-            { path: 'add', component: AddDonor }
-    ] },
-
+    { path: 'donors', component: Donors },
+    { path: 'donors/add', component: AddDonor },
+    { path: 'donors/update/:firstName/:lastName', component: UpdateDonor },
+    
     {path: 'login', component: Auth },
     {path: 'register', component: Auth }
 ];
