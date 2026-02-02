@@ -16,14 +16,22 @@ export class AuthService {
 
   login(username: string, password: string) {
   return this.httpClient
-    .post<{ token: string }>(this.BASE_URL + '/login', { username, password })
+    .post<{ token: string; userId?: number; id?: number }>(this.BASE_URL + '/login', { username, password })
     .pipe(
       tap((response) => {
-        localStorage.setItem('authToken', response.token);
+        const cleaned = (response?.token ?? '').replace(/^Bearer\s+/i, '');
+        localStorage.setItem('authToken', cleaned);
+        // Prefer explicit id returned by server; fallback to JWT decoding
+        const explicit = response?.userId ?? response?.id;
+        if (explicit !== undefined && explicit !== null) {
+          const num = Number(explicit);
+          if (Number.isFinite(num)) localStorage.setItem('userId', String(num));
+        } else {
+          const uid = this.getUserId();
+          if (uid !== null) localStorage.setItem('userId', String(uid));
+        }
         const role = this.getRole();
         localStorage.setItem('role', role);
-        const uid = this.getUserId();
-        if (uid !== null) localStorage.setItem('userId', String(uid));
         window.dispatchEvent(new CustomEvent('authTokenUpdated'));
         this.isLoggedIn = true;
       }),
@@ -36,35 +44,11 @@ export class AuthService {
     );
 }
 
-  // login(username: string, password: string) {
-  //   this.httpClient.post<{ token: string }>(this.BASE_URL + '/login', { username, password })
-  //     .subscribe({
-  //       next: (response) => {
-  //         localStorage.setItem('authToken', response.token);
-  //         const role = this.getRole();
-  //         localStorage.setItem('role', role);
-  //           // שמירת מזהה המשתמש אם קיים בטוקן
-  //         const uid = this.getUserId();
-  //         if (uid !== null) {
-  //           localStorage.setItem('userId', String(uid));
-  //         }
-  //         // Notify app to refresh role immediately
-  //         window.dispatchEvent(new CustomEvent('authTokenUpdated'));
-  //         alert('ההתחברות הצליחה!');
-  //         this.isLoggedIn = true;
-  //       },
-  //       error: (err) => {
-  //         this.isLoggedIn = false;
-  //         alert('שגיאה בהתחברות: ' + err.message);
-  //       }
-  //     });
-  // }
-
   getRole(): 'manager' | 'user' | 'userWithoutToken' {
     const token = localStorage.getItem('authToken');
     if (!token) return 'userWithoutToken';
     try {
-      const decoded: any = jwtDecode(token);
+      const decoded: any = jwtDecode(token.replace(/^Bearer\s+/i, ''));
       const keys = [
         'Role',
         'role',
@@ -97,17 +81,32 @@ export class AuthService {
     const token = localStorage.getItem('authToken');
     if (!token) return null;
     try {
-      const decoded: any = jwtDecode(token);
+      const decoded: any = jwtDecode(token.replace(/^Bearer\s+/i, ''));
       const keys = [ //לבדוק האם אפשר לקצר כנ"ל לשאר הפונקציות
+        // סטנדרטי
         'sub',
         'nameid',
-        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/nameidentifier',
+        // נפוצים במימושים שונים
+        'Id',
+        'ID',
+        'UserId',
+        'userId',
+        'userid'
       ];
       for (const key of keys) {
         const val = decoded?.[key];
         if (val !== undefined && val !== null) {
           const num = Number(val);
           return Number.isFinite(num) ? num : null;
+        }
+      }
+      // נסיון אחרון: מציאת שדה שמכיל 'id' והערך שלו מספרי
+      for (const [k, v] of Object.entries(decoded as Record<string, unknown>)) {
+        if (k && k.toLowerCase().includes('id')) {
+          const num = Number(v as any);
+          if (Number.isFinite(num)) return num;
         }
       }
       return null;

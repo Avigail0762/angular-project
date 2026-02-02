@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { AuthService } from './auth-service';
 import { UserDTO } from '../models/Dto/userDto';
 import { Gift } from '../models/giftModel';
+import { EMPTY, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,7 @@ export class CustomerService {
     const userId = this.auth.getStoredUserId();
     if (userId == null) {
       alert('לא נמצא משתמש מחובר');
-      return this.httpClient.post<void>('about:blank', null); // no-op observable
+      return EMPTY;
     }
     return this.addToCart(userId, giftId);
   }
@@ -52,7 +53,7 @@ export class CustomerService {
     const userId = this.auth.getStoredUserId();
     if (userId == null) {
       alert('לא נמצא משתמש מחובר');
-      return this.httpClient.delete<void>('about:blank');
+      return EMPTY;
     }
     return this.removeFromCart(userId, giftId);
   }
@@ -61,6 +62,7 @@ export class CustomerService {
     const userId = this.auth.getStoredUserId();
     if (userId == null) {
       alert('לא נמצא משתמש מחובר');
+      return EMPTY;
     }
     return this.httpClient.post<void>(this.BASE_URL + `/cart/purchase`, { userId }, { headers: this.getAuthHeader()});
   }
@@ -76,7 +78,7 @@ export class CustomerService {
     const userId = this.auth.getStoredUserId();
     if (userId == null) {
       alert('לא נמצא משתמש מחובר');
-      return this.httpClient.get<any>('about:blank');
+      return of([] as Gift[]);
     }
     return this.getCart(userId);
   }

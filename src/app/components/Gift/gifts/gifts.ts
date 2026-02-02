@@ -3,7 +3,6 @@ import { GiftsService } from '../../../services/gifts-service';
 import { Gift } from '../../../models/giftModel';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
 import { GiftDTO } from '../../../models/Dto/giftDto';
 import { AuthService } from '../../../services/auth-service';
 import { Observable } from 'rxjs';
@@ -12,7 +11,7 @@ import { CustomerService } from '../../../services/customer-service';
 
 @Component({
   selector: 'app-gifts',
-  imports: [FormsModule, CommonModule, RouterOutlet],
+  imports: [FormsModule, CommonModule],
   templateUrl: './gifts.html',
   styleUrl: './gifts.scss'
 })
@@ -43,6 +42,11 @@ export class Gifts {
   }
 
   addToCart(giftId: number){
+    const uid = this.auth.getStoredUserId();
+    if (uid == null) {
+      alert('לא נמצא משתמש מחובר');
+      return;
+    }
     this.customerSrv.addToCartForCurrentUser(giftId).subscribe();
     alert(`Gift with ID ${giftId} added to cart!`);
   }
@@ -53,7 +57,6 @@ export class Gifts {
   getById(id: number){
   this.gift$ = this.giftsSrv.getById(id);
   }
-
 
   delete(id: number){
     this.giftsSrv.delete(id).subscribe(data =>{

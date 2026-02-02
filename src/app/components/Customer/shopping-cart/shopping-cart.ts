@@ -29,9 +29,6 @@ export class ShoppingCart {
     const items = this.asItems(data);
     return items.reduce((sum, g) => sum + (Number(g.price) || 0), 0);
   }
-
-  
-
   remove(giftId: number) {
     this.customerSrv.removeFromCartForCurrentUser(giftId).subscribe({
       next: () => {
