@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterOutlet, RouterLinkWithHref } from '@angular/router';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { RouterOutlet, RouterLinkWithHref, Router } from '@angular/router';
 import { Gifts } from './components/Gift/gifts/gifts';
 import { Donors } from './components/Donor/donors/donors';
 import { Lottery } from './components/lottery/lottery';
@@ -18,6 +18,8 @@ import { AuthService } from './services/auth-service';
 export class App implements OnInit, OnDestroy {
 
   Role: 'manager' | 'user' | 'userWithoutToken' | null = null;
+
+  router = inject(Router);
 
   private onAuthTokenUpdated = () => this.updateRoleFromService(); // חידוש התפקיד כאשר הטוקן משתנה
 
@@ -41,5 +43,6 @@ export class App implements OnInit, OnDestroy {
   logOut(){
     this.Role = 'userWithoutToken';
     this.auth.logout();
+    this.router.navigate(['/home']);
   }
 }

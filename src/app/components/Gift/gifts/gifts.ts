@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth-service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../../../services/customer-service';
+import { PurchaseService } from '../../../services/purchase-service';
 
 @Component({
   selector: 'app-gifts',
@@ -20,6 +21,7 @@ export class Gifts {
   giftsSrv: GiftsService = inject(GiftsService)
   auth = inject(AuthService);
   customerSrv = inject(CustomerService);
+  purchaseSrv = inject(PurchaseService);
 
   gifts$ = this.giftsSrv.getAll();
   gift$?: Observable<GiftDTO>;
@@ -62,6 +64,10 @@ export class Gifts {
     this.giftsSrv.delete(id).subscribe(data =>{
       this.gifts$ = this.giftsSrv.getAll();
     })
+  }
+
+  getGiftsByPrice(){
+    this.gifts$ = this.purchaseSrv.getGiftsByPrice();
   }
 
 }
