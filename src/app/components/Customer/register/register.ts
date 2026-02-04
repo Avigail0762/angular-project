@@ -3,11 +3,11 @@ import { UserDTO } from '../../../models/Dto/userDto';
 import { CustomerService } from '../../../services/customer-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
@@ -16,22 +16,36 @@ export class Register {
   customerService = inject(CustomerService);
   router = inject(Router);
 
-  user: UserDTO = {
-    username: '',
-    phone: '',
-    email: '',
-    password: ''
-  };
+  registerForm = new FormGroup({
+    username: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(30),
+      Validators.pattern(/^[A-Za-z0-9_]+$/)
+    ]),
+    phone: new FormControl<string>('', [
+      Validators.pattern(/^\d{7,15}$/)
+    ]),
+    email: new FormControl<string>('', [
+      Validators.required,
+      Validators.email
+    ]),
+    password: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(6)
+    ])
+  });
 
   loading = false;
 
   register() {
-    if (!this.user.username || !this.user.email || !this.user.password) {
-      alert('נא למלא שם משתמש, אימייל וסיסמה');
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
       return;
     }
     this.loading = true;
-    this.customerService.registerCustomer(this.user).subscribe({
+    const dto = this.registerForm.value as UserDTO;
+    this.customerService.registerCustomer(dto).subscribe({
       next: () => {
         alert('ההרשמה הצליחה! עוברים למסך התחברות...');
         this.router.navigate(['/login']);
@@ -45,6 +59,4 @@ export class Register {
       }
     });
   }
-
-
 }

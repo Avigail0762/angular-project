@@ -9,6 +9,7 @@ import { UpdateDonor } from './components/Donor/update-donor/update-donor';
 import { Register } from './components/Customer/register/register';
 import { ShoppingCart } from './components/Customer/shopping-cart/shopping-cart';
 import { Home } from './components/home/home';
+import { Lottery } from './components/lottery/lottery';
 
 export const routes: Routes = [
     {path: 'gifts', component: Gifts},
@@ -23,4 +24,5 @@ export const routes: Routes = [
     {path: 'register', component: Register },
     {path: 'cart', component: ShoppingCart },
     {path: 'home', component: Home },
+    {path: 'lottery', component: Lottery}
 ];
