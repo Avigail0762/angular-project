@@ -17,6 +17,7 @@ export class UpdateGift {
     router = inject(Router);
     giftId!: number;
     gift?: GiftDTO;
+  canUpdate: boolean = true;
 
     giftForm: FormGroup = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -31,13 +32,15 @@ export class UpdateGift {
       this.giftsSrv.getById(this.giftId).subscribe(g => {
         this.gift = g;
         this.giftForm.patchValue(this.gift);
+            // If there are buyers (tickets), prevent updating
+            this.canUpdate = (g.buyersNumber ?? 0) === 0;
       });
     }
   }
 
 
   updateGift() {
-    if (!this.giftId || this.giftForm.invalid) return;
+    if (!this.giftId || this.giftForm.invalid || !this.canUpdate) return;
 
     const updatedGift: GiftDTO = {
       ...this.gift,
