@@ -5,7 +5,6 @@ import { Router, RouterOutlet } from '@angular/router';
 import { DonorService } from '../../../services/donor-service';
 import { GiftsService } from '../../../services/gifts-service';
 import { Donor } from '../../../models/donorModel';
-import { DonorDTO } from '../../../models/Dto/donorDto';
 
 @Component({
   selector: 'app-donors',

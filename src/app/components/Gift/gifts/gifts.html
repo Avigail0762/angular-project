@@ -31,11 +31,12 @@
             </tr>
 
             @if(this.isManager){
-            <button (click)="delete(g.id)"> Delete Gift </button>
-            <button (click)="updateGift(g.id)"> Update Gift </button>
+            <button (click)="delete(g.id)" [disabled]="g.buyersNumber > 0"> Delete Gift </button>
+            <button (click)="updateGift(g.id)" [disabled]="g.buyersNumber > 0"> Update Gift </button>
+            <button (click)="viewTickets(g.id)"> View Tickets </button>
             }
              @if(!this.isManager){
-                <button (click)="addToCart(g.id)"> Add To Cart </button>
+                <button (click)="addToCart(g.id)" [disabled]="g.isDrawn"> Add To Cart </button>
             }
         }
     </tbody>

@@ -64,7 +64,7 @@ export class CustomerService {
       alert('לא נמצא משתמש מחובר');
       return EMPTY;
     }
-    return this.httpClient.post<void>(this.BASE_URL + `/cart/purchase`, { userId }, { headers: this.getAuthHeader()});
+    return this.httpClient.post<void>(this.BASE_URL + `/purchase?userId=${userId}`,{ headers: this.getAuthHeader()});
   }
 
   getCart(customerId: number) {

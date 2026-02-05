@@ -10,11 +10,13 @@ import { Register } from './components/Customer/register/register';
 import { ShoppingCart } from './components/Customer/shopping-cart/shopping-cart';
 import { Home } from './components/home/home';
 import { Lottery } from './components/lottery/lottery';
+import { GiftTicket } from './components/Gift/gift-ticket/gift-ticket';
 
 export const routes: Routes = [
     {path: 'gifts', component: Gifts},
     { path: 'gifts/add', component: AddGift },
     { path: 'gifts/update/:id', component: UpdateGift },
+    {path: 'gift-tickets/:id',component: GiftTicket},
 
     { path: 'donors', component: Donors },
     { path: 'donors/add', component: AddDonor },
@@ -25,4 +27,5 @@ export const routes: Routes = [
     {path: 'cart', component: ShoppingCart },
     {path: 'home', component: Home },
     {path: 'lottery', component: Lottery}
+
 ];

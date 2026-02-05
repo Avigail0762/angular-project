@@ -5,3 +5,9 @@
     בצע הגרלה
   </button>
 }
+<button (click)="downloadWinnersReport()">📄 קבלת דוח זוכים</button>
+<button (click)="getTotalIncome()">💰 הצג הכנסות</button>
+
+<p *ngIf="totalIncome !== null">
+  סה"כ הכנסות: {{ totalIncome }} ₪
+</p>

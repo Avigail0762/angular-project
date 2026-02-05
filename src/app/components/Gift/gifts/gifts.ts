@@ -70,4 +70,7 @@ export class Gifts {
     this.gifts$ = this.purchaseSrv.getGiftsByPrice();
   }
 
+  viewTickets = (giftId: number) => {
+  this.router.navigate(['/gift-tickets', giftId]);
+}
 }
