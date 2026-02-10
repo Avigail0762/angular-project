@@ -2,12 +2,13 @@
 @for (g of gifts$ | async; track g.id) {
   <p>{{ g.name }}</p>
   <button (click)="draw(g.id)"  [disabled]="g.isDrawn">
-    בצע הגרלה
+   Make a lottery
   </button>
 }
-<button (click)="downloadWinnersReport()">📄 קבלת דוח זוכים</button>
-<button (click)="getTotalIncome()">💰 הצג הכנסות</button>
+<br>
+<button (click)="downloadWinnersReport()">📄 Winners Report</button>
+<button (click)="getTotalIncome()">💰 Revenue</button>
 
 <p *ngIf="totalIncome !== null">
-  סה"כ הכנסות: {{ totalIncome }} ₪
+ Total revenue: {{ totalIncome }} ₪
 </p>
