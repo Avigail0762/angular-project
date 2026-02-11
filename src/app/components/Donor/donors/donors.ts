@@ -5,6 +5,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { DonorService } from '../../../services/donor-service';
 import { GiftsService } from '../../../services/gifts-service';
 import { Donor } from '../../../models/donorModel';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-donors',
@@ -20,6 +21,9 @@ export class Donors {
   donor = new Donor();  
   donorIdsWithGifts: Set<number> = new Set<number>();
 
+  firstNameFilter: string = '';
+lastNameFilter: string = '';
+
     ngOnInit() {
       this.refreshDonorGiftSet();
     }
@@ -28,11 +32,11 @@ export class Donors {
       this.donors$ = this.donorSrv.getAll();
       this.refreshDonorGiftSet();
     }
-    geByName(firstName: string, lastName: string){
-      this.donorSrv.geByName(firstName, lastName).subscribe(data =>{
-        this.donor = data;
-      })
-    } 
+    // geByName(firstName: string, lastName: string){
+    //   this.donorSrv.geByName(firstName, lastName).subscribe(data =>{
+    //     this.donor = data;
+    //   })
+    // } 
     delete(id: number){
       // Frontend guard: prevent deleting donors who have gifts
       if (this.donorIdsWithGifts.has(id)) {
@@ -66,5 +70,22 @@ export class Donors {
       this.donorIdsWithGifts = ids;
     })
   }
+searchByName() {
+  if (!this.firstNameFilter || !this.lastNameFilter) {
+    this.getAll();
+    return;
+  }
+
+  this.donors$ = this.donorSrv
+    .getByName(this.firstNameFilter, this.lastNameFilter)
+    .pipe(map(d => d ? [d] : []));
+}
+
+
+clearFilter() {
+  this.firstNameFilter = '';
+  this.lastNameFilter = '';
+  this.getAll();
+}
 
 }

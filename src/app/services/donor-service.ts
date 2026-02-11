@@ -25,7 +25,7 @@ export class DonorService {
     return this.httpClient.get<Donor[]>(this.BASE_URL, { headers: this.getAuthHeader() });
   }
 
-  geByName(firstName: string, lastName: string) {
+  getByName(firstName: string, lastName: string) {
     return this.httpClient.get<Donor>(this.BASE_URL + '/name', { params: { firstName, lastName }, headers: this.getAuthHeader() }
     );
   }

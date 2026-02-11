@@ -1,7 +1,14 @@
 <p> Donors </p>
 
 <button (click)="addDonor()"> Add Donor </button>
+<div class="filter-box">
+  <input class="small-input" [(ngModel)]="firstNameFilter" placeholder="First Name">
+  <input class="small-input" [(ngModel)]="lastNameFilter" placeholder="Last Name">
+</div>
 
+
+<button (click)="searchByName()">Search</button>
+<button (click)="clearFilter()">Clear</button>
 <table>
   <thead>
     <tr>

@@ -33,7 +33,7 @@ export class UpdateDonor {
     const firstName = this.route.snapshot.paramMap.get('firstName')!;
     const lastName = this.route.snapshot.paramMap.get('lastName')!;
 
-    this.donorSrv.geByName(firstName, lastName).subscribe((d: Donor) => {
+    this.donorSrv.getByName(firstName, lastName).subscribe((d: Donor) => {
       this.donorId = d.id;              
       this.donorForm.patchValue(d);     
     });
